@@ -1,6 +1,7 @@
 MIT License
 
-Copyright (c) 2026 ephy-io
+Copyright (c) 2025 Yu Zhong
+Copyright (c) 2026 QQj (InsightFlow additions and modifications)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +20,13 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+Attribution and separate licenses
+
+InsightFlow incorporates and modifies OpenChatBI, covered by the original
+copyright notice above. Both sets of contributions are provided under the
+MIT License above.
+
+Third-party packages installed from the dependency lockfile retain their
+own license terms and notices. Optional forecasting model weights are
+obtained separately and remain subject to their respective terms.
