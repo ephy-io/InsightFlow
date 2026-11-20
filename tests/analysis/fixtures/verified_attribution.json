@@ -1,0 +1,170 @@
+{
+  "route_01": {
+    "question": "运营想弄清2025年6月相比5月订单明细行数减少，主要是哪些订单状态拉低了整体工作量？一条商品明细计一行，覆盖所有订单。请指出拖累最大的状态及两月行数、减少量。 无需图表。附 JSON 对象，键为 review。按 [分组名称, 基期值, 当期值, 变化绝对值] 返回。",
+    "expected": [
+      "已完成",
+      619,
+      561,
+      58
+    ],
+    "args": {
+      "reasoning": "对订单明细行数下降进行归因分析，按订单状态维度找出拖累最大的状态",
+      "data": [
+        {
+          "dimension_name": "订单状态",
+          "element_value": "已完成",
+          "predict": 619,
+          "real": 561,
+          "predict_numerator": null,
+          "predict_denominator": null,
+          "real_numerator": null,
+          "real_denominator": null,
+          "proportion": 0.866,
+          "base_proportion": 0.865
+        },
+        {
+          "dimension_name": "订单状态",
+          "element_value": "已取消",
+          "predict": 54,
+          "real": 42,
+          "predict_numerator": null,
+          "predict_denominator": null,
+          "real_numerator": null,
+          "real_denominator": null,
+          "proportion": 0.064,
+          "base_proportion": 0.075
+        },
+        {
+          "dimension_name": "订单状态",
+          "element_value": "处理中",
+          "predict": 43,
+          "real": 55,
+          "predict_numerator": null,
+          "predict_denominator": null,
+          "real_numerator": null,
+          "real_denominator": null,
+          "proportion": 0.084,
+          "base_proportion": 0.06
+        }
+      ],
+      "derived": false,
+      "issue_type": "drop",
+      "k": 3
+    },
+    "sql_output": "SQL Query:\n```sql\nSELECT \n    o.status AS \"订单状态\",\n    COUNT(CASE WHEN o.order_date BETWEEN '2025-05-01' AND '2025-05-31' THEN 1 END) AS \"5月明细行数\",\n    COUNT(CASE WHEN o.order_date BETWEEN '2025-06-01' AND '2025-06-30' THEN 1 END) AS \"6月明细行数\",\n    COUNT(CASE WHEN o.order_date BETWEEN '2025-05-01' AND '2025-05-31' THEN 1 END) - \n    COUNT(CASE WHEN o.order_date BETWEEN '2025-06-01' AND '2025-06-30' THEN 1 END) AS \"减少量\"\nFROM orders o\nJOIN order_items oi ON o.order_id = oi.order_id\nWHERE o.order_date BETWEEN '2025-05-01' AND '2025-06-30'\nGROUP BY o.status\nORDER BY \"减少量\" DESC;\n```\n\n\nQuery Results (CSV format):\n```csv\n订单状态,5月明细行数,6月明细行数,减少量\r\n已完成,619,561,58\r\n已取消,54,42,12\r\n处理中,43,55,-12\r\n\n```"
+  },
+  "route_02": {
+    "question": "采购投入在2025年7月相对6月有变化。请追溯已完成交易的商品成本增长来自哪些品类，并给出拉动最大品类的基期成本、当期成本及增额。成本按明细件数乘商品档案单件成本计算，金额保留两位小数。 无需图表。附 JSON 对象，键为 review。按 [分组名称, 基期值, 当期值, 变化绝对值] 返回。",
+    "expected": [
+      "家居",
+      36197.0,
+      45294.61,
+      9097.61
+    ],
+    "args": {
+      "reasoning": "追溯2025年7月已完成交易商品成本相对6月的增长由哪些品类推动，找出拉动最大的品类",
+      "data": [
+        {
+          "dimension_name": "商品品类",
+          "element_value": "图书",
+          "predict": 49888.52,
+          "real": 43355.47,
+          "predict_numerator": null,
+          "predict_denominator": null,
+          "real_numerator": null,
+          "real_denominator": null,
+          "proportion": 0.2234,
+          "base_proportion": 0.2234
+        },
+        {
+          "dimension_name": "商品品类",
+          "element_value": "家居",
+          "predict": 36197.0,
+          "real": 45294.61,
+          "predict_numerator": null,
+          "predict_denominator": null,
+          "real_numerator": null,
+          "real_denominator": null,
+          "proportion": 0.1663,
+          "base_proportion": 0.1621
+        },
+        {
+          "dimension_name": "商品品类",
+          "element_value": "数码",
+          "predict": 24283.57,
+          "real": 23940.55,
+          "predict_numerator": null,
+          "predict_denominator": null,
+          "real_numerator": null,
+          "real_denominator": null,
+          "proportion": 0.1087,
+          "base_proportion": 0.1087
+        },
+        {
+          "dimension_name": "商品品类",
+          "element_value": "服饰",
+          "predict": 34743.79,
+          "real": 43710.9,
+          "predict_numerator": null,
+          "predict_denominator": null,
+          "real_numerator": null,
+          "real_denominator": null,
+          "proportion": 0.1609,
+          "base_proportion": 0.1556
+        },
+        {
+          "dimension_name": "商品品类",
+          "element_value": "母婴",
+          "predict": 19435.95,
+          "real": 21480.02,
+          "predict_numerator": null,
+          "predict_denominator": null,
+          "real_numerator": null,
+          "real_denominator": null,
+          "proportion": 0.079,
+          "base_proportion": 0.087
+        },
+        {
+          "dimension_name": "商品品类",
+          "element_value": "美妆",
+          "predict": 25155.01,
+          "real": 34218.05,
+          "predict_numerator": null,
+          "predict_denominator": null,
+          "real_numerator": null,
+          "real_denominator": null,
+          "proportion": 0.1259,
+          "base_proportion": 0.1126
+        },
+        {
+          "dimension_name": "商品品类",
+          "element_value": "运动",
+          "predict": 26342.86,
+          "real": 27181.7,
+          "predict_numerator": null,
+          "predict_denominator": null,
+          "real_numerator": null,
+          "real_denominator": null,
+          "proportion": 0.1,
+          "base_proportion": 0.1179
+        },
+        {
+          "dimension_name": "商品品类",
+          "element_value": "食品",
+          "predict": 27311.64,
+          "real": 32814.37,
+          "predict_numerator": null,
+          "predict_denominator": null,
+          "real_numerator": null,
+          "real_denominator": null,
+          "proportion": 0.1206,
+          "base_proportion": 0.1223
+        }
+      ],
+      "derived": false,
+      "issue_type": "rise",
+      "k": 3
+    },
+    "sql_output": "SQL Query:\n```sql\nSELECT\n    p.category AS 商品品类,\n    substr(o.order_date, 1, 7) AS 订单月份,\n    ROUND(SUM(oi.quantity * p.unit_cost), 2) AS 商品成本\nFROM orders o\nJOIN order_items oi ON o.order_id = oi.order_id\nJOIN products p ON oi.product_id = p.product_id\nWHERE o.status = '已完成'\n  AND o.order_date >= '2025-06-01'\n  AND o.order_date <= '2025-07-31'\nGROUP BY\n    p.category,\n    substr(o.order_date, 1, 7)\nORDER BY\n    p.category,\n    订单月份;\n```\n\n\nQuery Results (CSV format):\n```csv\n商品品类,订单月份,商品成本\r\n图书,2025-06,49888.52\r\n图书,2025-07,43355.47\r\n家居,2025-06,36197.0\r\n家居,2025-07,45294.61\r\n数码,2025-06,24283.57\r\n数码,2025-07,23940.55\r\n服饰,2025-06,34743.79\r\n服饰,2025-07,43710.9\r\n母婴,2025-06,19435.95\r\n母婴,2025-07,21480.02\r\n美妆,2025-06,25155.01\r\n美妆,2025-07,34218.05\r\n运动,2025-06,26342.86\r\n运动,2025-07,27181.7\r\n食品,2025-06,27311.64\r\n食品,2025-07,32814.37\r\n\n```"
+  }
+}

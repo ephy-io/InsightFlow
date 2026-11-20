@@ -1,0 +1,24 @@
+db_name,table_name,column_name,display_name,alias,type,category,tag,description,default,dimension_table
+,regions,region_id,地区编号,,INTEGER,dimension,地区,地区主键,,
+,regions,region_name,地区名称,,TEXT,dimension,地区,中文经营区域,,
+,sales_channels,channel_id,渠道编号,,INTEGER,dimension,渠道,渠道主键,,
+,sales_channels,channel_name,销售渠道,,TEXT,dimension,渠道,订单来源渠道,,
+,customers,customer_id,客户编号,,INTEGER,dimension,客户,客户主键,,
+,customers,customer_name,客户名称,,TEXT,dimension,客户,模拟客户名称,,
+,customers,region_id,地区编号,,INTEGER,dimension,地区,客户所属地区,,regions
+,customers,created_at,客户创建日期,,TEXT,temporal,客户,客户建档日期,,
+,products,product_id,商品编号,,INTEGER,dimension,商品,商品主键,,
+,products,product_name,商品名称,,TEXT,dimension,商品,中文模拟商品名称,,
+,products,category,商品品类,,TEXT,dimension,商品,经营分析品类,,
+,products,unit_cost,商品成本,,REAL,metric,商品,单件商品成本,,
+,orders,order_id,订单编号,,INTEGER,dimension,订单,订单主键,,
+,orders,customer_id,客户编号,,INTEGER,dimension,客户,下单客户,,customers
+,orders,channel_id,渠道编号,,INTEGER,dimension,渠道,下单渠道,,sales_channels
+,orders,order_date,订单日期,,TEXT,temporal,订单,ISO 格式日期（YYYY-MM-DD）,,
+,orders,status,订单状态,,TEXT,dimension,订单,已完成／已取消／处理中,,
+,order_items,order_item_id,订单明细编号,,INTEGER,dimension,订单明细,订单明细主键,,
+,order_items,order_id,订单编号,,INTEGER,dimension,订单,明细对应订单,,orders
+,order_items,product_id,商品编号,,INTEGER,dimension,商品,明细对应商品,,products
+,order_items,quantity,购买数量,,INTEGER,metric,订单明细,商品件数,,
+,order_items,unit_price,成交单价,,REAL,metric,订单明细,折扣前单价,,
+,order_items,discount_rate,折扣率,,REAL,metric,订单明细,取值范围 0 到 1,,

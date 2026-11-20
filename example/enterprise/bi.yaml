@@ -1,0 +1,24 @@
+extra_tool_use_rule: |
+  - 中文商品、地区和渠道名称对应英文字段时，使用 Schema 中提供的业务描述进行匹配。
+  - 销售额按订单明细计算：SUM(quantity * unit_price * (1 - discount_rate))。
+  - 销售额、实付销售额、消费金额和毛利默认只统计 status = '已完成'；用户明确指定其他状态时遵从用户。订单数、订单金额、明细行数、客户数和商品件数未指定状态时覆盖全部状态。
+  - 计算商品或地区销售额时，关联 order_items、orders 与所需维表，并避免重复计数。
+table_selection_extra_rule: |
+  - 按地区分析客户时关联 customers.region_id 与 regions.region_id。
+  - 按渠道分析订单时关联 orders.channel_id 与 sales_channels.channel_id。
+  - 按商品品类或销售额分析时关联 order_items.product_id 与 products.product_id。
+text2sql_extra_rule: |
+  - 销售额使用 quantity * unit_price * (1 - discount_rate)，不要忽略折扣。
+  - 区分订单数 COUNT(DISTINCT orders.order_id) 与订单明细行数 COUNT(order_items.order_item_id)。
+  - 日期字段 order_date 为 YYYY-MM-DD 格式的文本，可按 ISO 日期字符串进行范围过滤。
+basic_knowledge_glossary: |
+  # 业务口径
+  本目录中的数据均为固定随机种子生成的模拟电商数据，不代表真实企业生产数据。
+  订单由客户在销售渠道下单；一张订单可包含多个商品明细。
+  已完成订单表示已完成的经营交易；订单取消和处理中状态不计入已完成销售额。
+  销售额 = 数量 × 成交单价 × (1 - 折扣率)，单位为模拟货币单位。
+  未指定时间范围时使用可用全历史；按日、月、年分组不自动添加时间限制。
+  平均成本必须说明统计主体：商品等权平均对 products 每个商品计算一次；成交明细加权平均对每条 order_items 对应商品成本计算一次。缺少粒度且影响答案时先澄清。库中 unit_price 是明细成交单价，不是独立商品标价。
+  按活动月统计的新客是首笔订单月份等于当月且当月下单的客户；老客复购是首笔订单月份早于当月且当月下单的客户，按客户去重，首购月内第二笔不计入老客复购。未指定状态和时间时采用全部状态和全历史。这与按首购月分组的 cohort 全生命周期复购指标不同。
+  渠道或地区销售额占比的分母是相同状态、日期范围内的全部销售额，不继承当前分组维度的过滤；所有互斥且穷尽的分组占比合计应约等于1。
+  地区字段使用简体中文区域名称，渠道和品类字段使用简体中文名称。

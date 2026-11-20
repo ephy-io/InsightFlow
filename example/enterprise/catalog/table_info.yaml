@@ -1,0 +1,19 @@
+? ''
+: customers:
+    description: 客户维表，记录模拟客户及其所属地区和建档日期。
+    selection_rule: 查询客户属性或按客户地区汇总时使用；customer_id 为主键。
+  order_items:
+    description: 订单明细事实表，记录商品数量、成交单价和折扣率。
+    selection_rule: 销售金额、商品数量和品类分析使用；通过 order_id、product_id 连接订单和商品。
+  orders:
+    description: 订单事实表，包含下单客户、渠道、日期和订单状态。
+    selection_rule: 订单数、时间趋势、客户或渠道分析使用；customer_id、channel_id 分别关联对应维表。
+  products:
+    description: 商品维表，记录模拟商品、品类和单位成本。
+    selection_rule: 按商品或品类分析订单明细时使用；product_id 为主键。
+  regions:
+    description: 地区维表，记录用于经营分析的中文区域。
+    selection_rule: 按地区汇总或筛选客户时使用；通过 region_id 与客户表关联。
+  sales_channels:
+    description: 销售渠道维表，记录直营、电商平台、线下门店和企业团购等订单来源。
+    selection_rule: 分析订单渠道时使用；通过 channel_id 与订单表关联。

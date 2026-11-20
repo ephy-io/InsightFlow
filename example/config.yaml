@@ -1,0 +1,63 @@
+organization: Tracking Orders Demo
+dialect: sqlite
+bi_config_file: example/bi.yaml
+enable_sql_result_limit: true
+sql_result_limit: 1000
+enable_fail_closed_sql_guard: true
+python_executor: docker
+visualization_mode: llm
+schema_retrieval_strategy: rrf_reranker
+vector_db_path: ./.chroma_qwen37
+reranker_config:
+  model: ${DASHSCOPE_RERANK_MODEL:-qwen3-rerank}
+  endpoint: ${DASHSCOPE_RERANK_URL:-https://dashscope.aliyuncs.com/compatible-api/v1/reranks}
+  api_key: ${DASHSCOPE_API_KEY}
+  timeout: 15
+catalog_store:
+  store_type: file_system
+  auto_load: false
+  data_path: ./example
+data_warehouse_config:
+  uri: sqlite:///example/tracking_orders.sqlite
+  database_name: ""
+default_llm:
+  class: langchain_openai.ChatOpenAI
+  params:
+    api_key: ${DASHSCOPE_API_KEY}
+    base_url: ${DASHSCOPE_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+    model: ${DASHSCOPE_CHAT_MODEL:-qwen3.7-plus}
+    timeout: 60
+    max_retries: 0
+    temperature: 0.01
+    max_tokens: 8192
+text2sql_llm:
+  class: langchain_openai.ChatOpenAI
+  params:
+    api_key: ${DASHSCOPE_API_KEY}
+    base_url: ${DASHSCOPE_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+    model: ${DASHSCOPE_CHAT_MODEL:-qwen3.7-plus}
+    timeout: 60
+    max_retries: 0
+    temperature: 0.0
+    max_tokens: 8192
+analysis_llm:
+  class: langchain_openai.ChatOpenAI
+  params:
+    api_key: ${DASHSCOPE_API_KEY}
+    base_url: ${DASHSCOPE_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+    model: ${DASHSCOPE_CHAT_MODEL:-qwen3.7-plus}
+    timeout: 60
+    max_retries: 0
+    temperature: 0.0
+    max_tokens: 8192
+embedding_model:
+  class: langchain_openai.OpenAIEmbeddings
+  params:
+    api_key: ${DASHSCOPE_API_KEY}
+    base_url: ${DASHSCOPE_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+    model: ${DASHSCOPE_EMBEDDING_MODEL:-qwen3.7-text-embedding}
+    dimensions: 1024
+    chunk_size: 20
+    request_timeout: 60
+    max_retries: 0
+    check_embedding_ctx_length: false
